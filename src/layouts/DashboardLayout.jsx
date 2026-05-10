@@ -5,11 +5,11 @@ import { Outlet } from "react-router";
 const DashboardLayout = () => {
   return (
     <div>
-      <SidebarProvider>
-        <AppSidebar>
+      <SidebarProvider  className={"w-full"}>
+        <AppSidebar  className={"w-1/6"}>
           
         </AppSidebar>
-        <main>
+        <main  className={"w-5/6"}>
           <SidebarTrigger />
           <Outlet></Outlet>
         </main>

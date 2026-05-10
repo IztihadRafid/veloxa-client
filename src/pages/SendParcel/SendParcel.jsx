@@ -4,6 +4,7 @@ import { User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import Swal from "sweetalert2";
+import thinkImg from "@/assets/thinkImg.png"
 const SendParcel = () => {
     const {
         register,
@@ -51,9 +52,11 @@ const SendParcel = () => {
         Swal.fire({
             title: "Agree with the cost?",
             text: `Your parcel will cost: ${cost}Tk/-`,
-            icon: "warning",
+            imageUrl: thinkImg,
+            imageHeight:80,
+            imageWidth:80,
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
+            confirmButtonColor: "#99c026",
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes, I agree"
         }).then((result) => {
@@ -61,6 +64,12 @@ const SendParcel = () => {
                 axiosSecure.post('/parcels',data)
                 .then(res => {
                     console.log("after saving parcel: ",res)
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Parcel sent successfully',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
                 })
             }
         });

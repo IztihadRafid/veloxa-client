@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -10,19 +11,44 @@ import {
 import useAuth from "@/hooks/useAuth";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
-
+import { FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
+import Swal from "sweetalert2";
+import deleteImg from "@/assets/delete.png";
 const MyParcels = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
 
-  const { data: parcels = [], isLoading } = useQuery({
+  const { data: parcels = [],refetch } = useQuery({
     queryKey: ["myParcels", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
       const res = await axiosSecure.get(`/parcels?email=${user.email}`);
-      if (isLoading) return <p>Loading...</p>;
+      return res.data;
     },
   });
+
+  const handleParcelDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure, you want to delete this parcel?",
+      imageUrl: deleteImg,
+      imageHeight: 100,
+      imageWidth: 100,
+      showCancelButton: true,
+      confirmButtonColor: "#99c026",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Delete",
+    }).then((result) => {
+      if (result.isConfirmed)
+        axiosSecure.delete(`/parcels/${id}`)
+          .then((res) => {
+            if (res.data.deletedCount > 0) {
+              Swal.fire("Deleted!", "Your parcel has been deleted.", "success");
+              refetch()
+            }
+          })
+          .catch((err) => console.log(err));
+    });
+  };
   return (
     <div className="overflow-hidden rounded-md border">
       {parcels.length}
@@ -38,15 +64,34 @@ const MyParcels = () => {
           </TableRow>
         </TableHeader>
 
-        {parcels?.map((data, index) => (
-          <TableBody key={index}>
+        {parcels?.map((parcel, index) => (
+          <TableBody key={parcel._id}>
             <TableRow>
               <TableCell className="font-medium">{index + 1}</TableCell>
-              <TableCell className="font-medium">{data?.senderName}</TableCell>
-              <TableCell>{data?.cost}</TableCell>
+              <TableCell className="font-medium">
+                {parcel?.senderName}
+              </TableCell>
+              <TableCell>{parcel?.cost}</TableCell>
               <TableCell>Credit Card</TableCell>
-              <TableCell className="text-right">
-                <button className="btn btn-primary">Details</button>
+              <TableCell className="text-center">
+                <Button className="btn btn-primary">
+                  <FaEye />
+                </Button>
+              </TableCell>
+              <TableCell className="text-center">
+                <Button className="btn btn-primary">
+                  <FaEdit />
+                </Button>
+              </TableCell>
+              <TableCell className="text-center">
+                <Button
+                  onClick={() => {
+                    handleParcelDelete(parcel?._id);
+                  }}
+                  className="btn btn-primary"
+                >
+                  <FaTrashAlt />
+                </Button>
               </TableCell>
             </TableRow>
           </TableBody>
