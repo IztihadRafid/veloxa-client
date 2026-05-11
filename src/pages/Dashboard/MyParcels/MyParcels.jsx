@@ -14,12 +14,12 @@ import { useQuery } from "@tanstack/react-query";
 import { FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
 import Swal from "sweetalert2";
 import deleteImg from "@/assets/delete.png";
-import { NavLink } from "react-router";
+
 const MyParcels = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
 
-  const { data: parcels = [],refetch } = useQuery({
+  const { data: parcels = [], refetch } = useQuery({
     queryKey: ["myParcels", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
@@ -40,15 +40,31 @@ const MyParcels = () => {
       confirmButtonText: "Delete",
     }).then((result) => {
       if (result.isConfirmed)
-        axiosSecure.delete(`/parcels/${id}`)
+        axiosSecure
+          .delete(`/parcels/${id}`)
           .then((res) => {
             if (res.data.deletedCount > 0) {
               Swal.fire("Deleted!", "Your parcel has been deleted.", "success");
-              refetch()
+              refetch();
             }
           })
           .catch((err) => console.log(err));
     });
+  };
+
+  const handlePayment = async (parcel) => {
+    const paymentInfo = {
+      cost: parcel?.cost,
+      parcelName: parcel?.parcelName,
+      parcelId: parcel?._id,
+      senderEmail: parcel?.senderEmail,
+    };
+    const res = await axiosSecure.post(
+      "/payment-checkout-session",
+      paymentInfo,
+    );
+    console.log(res.data.url);
+    window.location.assign(res.data.url);
   };
   return (
     <div className="overflow-hidden rounded-md border">
@@ -74,21 +90,27 @@ const MyParcels = () => {
               <TableCell className="font-medium">
                 {parcel?.senderName}
               </TableCell>
-               <TableCell className="font-medium">
+              <TableCell className="font-medium">
                 {parcel?.parcelName}
               </TableCell>
               <TableCell>{parcel?.cost}</TableCell>
-              {
-                parcel?.paymentStatus === "paid" ? (
-                  <TableCell className="font-medium text-green-500">
-                    Paid
-                  </TableCell>
-                ) : (
-                  <NavLink to={`/dashboard/my-parcels/${parcel?._id}`} className="px-4 py-2 rounded-[15px] bg-yellow-400 text-black">
-                    Unpaid
-                  </NavLink>
-                )
-              }
+              {parcel?.paymentStatus === "paid" ? (
+                <TableCell className="font-medium text-green-500">
+                  Paid
+                </TableCell>
+              ) : (
+                // <NavLink to={`/dashboard/my-parcels/${parcel?._id}`} className="px-4 py-2 rounded-[15px] bg-yellow-400 text-black">
+                //   Pay
+                // </NavLink>
+                <button
+                  onClick={() => {
+                    handlePayment(parcel);
+                  }}
+                  className="px-4 py-2 rounded-[15px] bg-yellow-400 text-black"
+                >
+                  Pay
+                </button>
+              )}
               <TableCell>{parcel?.deliveryStatus}</TableCell>
               <TableCell className="text-center">
                 <Button className="btn btn-primary">

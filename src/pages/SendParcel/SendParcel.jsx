@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import Swal from "sweetalert2";
 import thinkImg from "@/assets/thinkImg.png"
+import { useNavigate } from "react-router";
 const SendParcel = () => {
     const {
         register,
@@ -13,6 +14,7 @@ const SendParcel = () => {
         control,
     } = useForm()
     const [serviceCenters, setServiceCenters] = useState([]);
+    const navigate = useNavigate()
     const {user}= useAuth()
     // fetching data
     useEffect(() => {
@@ -58,18 +60,21 @@ const SendParcel = () => {
             showCancelButton: true,
             confirmButtonColor: "#56bd1f",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, I agree"
+            confirmButtonText: "Confirm"
         }).then((result) => {
             if (result.isConfirmed) {
                 axiosSecure.post('/parcels',data)
                 .then(res => {
-                    console.log("after saving parcel: ",res)
-                    Swal.fire({
+                   if(res.data.insertedId){
+                        Swal.fire({
                         icon: 'success',
-                        title: 'Parcel sent successfully',
+                        title: 'Parcel is Ready to Send',
                         showConfirmButton: false,
                         timer: 1500
                     })
+                     
+                   }
+                   navigate('/dashboard/my-parcels')
                 })
             }
         });
