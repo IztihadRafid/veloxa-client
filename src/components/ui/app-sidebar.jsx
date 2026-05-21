@@ -1,6 +1,6 @@
 import { Sidebar, SidebarContent } from "@/components/ui/sidebar";
 import Logo from "@/CustomComponents/Logo";
-import { FaHistory, FaHome, FaShoppingBag } from "react-icons/fa";
+import { FaHistory, FaHome, FaMotorcycle, FaShoppingBag, FaTruck } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
 import { SlSettings } from "react-icons/sl";
 import { NavLink } from "react-router";
@@ -26,6 +26,11 @@ export function AppSidebar() {
       icon: <FaHistory color="#56bd1f" size={"22px"} />,
       label: "Payment History",
       href: "/dashboard/payment-history",
+    },
+    {
+      icon: <FaMotorcycle color="#56bd1f" size={"22px"} />,
+      label: "Approve Riders",
+      href: "/dashboard/approve-riders",
     },
     {
       icon: <SlSettings color="#56bd1f" size={"22px"} />,
