@@ -27,7 +27,6 @@ const PaymentHistory = () => {
   // console.log("res: ", payments);
   return (
     <div className="overflow-hidden rounded-md border">
-      {payments.length}
       <Table>
         <TableCaption>A list of your recent invoices.</TableCaption>
         <TableHeader>

@@ -6,7 +6,7 @@ const DashboardLayout = () => {
   return (
     <div>
       <SidebarProvider  className={"w-full"}>
-        <AppSidebar  className={"w-1/6"}>
+        <AppSidebar  className={"w-1/6 bg-green-100"}>
           
         </AppSidebar>
         <main  className={"w-5/6"}>

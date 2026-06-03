@@ -68,7 +68,6 @@ const MyParcels = () => {
   };
   return (
     <div className="overflow-hidden rounded-md border">
-      {parcels.length}
       <Table>
         <TableCaption>A list of your recent invoices.</TableCaption>
         <TableHeader>

@@ -60,7 +60,7 @@ const Navbar = () => {
 
       {user && (
         <li className="list-none">
-          <NavLink to="/dashboard/my-parcels">
+          <NavLink to="/dashboard">
             Dashboard
           </NavLink>
         </li>
