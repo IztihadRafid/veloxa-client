@@ -75,7 +75,7 @@ const UsersManagement = () => {
     });
   };
 
-  // handle Delete User
+  // // handle Delete User
   const handleDeleteUser=(user)=>{
     Swal.fire({
       title: "Delete User?",
@@ -123,7 +123,7 @@ const UsersManagement = () => {
               <TableHead className="text-green-950">Role</TableHead>
               <TableHead className="text-green-950">Created At</TableHead>
               <TableHead className="text-green-950">Admin Action</TableHead>
-              <TableHead className="text-green-950">User Action</TableHead>
+              {/* <TableHead className="text-green-950">User Action</TableHead> */}
             </TableRow>
           </TableHeader>
           <TableBody>
