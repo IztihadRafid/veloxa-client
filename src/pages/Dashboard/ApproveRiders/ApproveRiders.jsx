@@ -39,7 +39,27 @@ const ApproveRiders = () => {
       ? `${stringText.slice(0, maxLength)}...`
       : stringText;
   };
-
+// handle delete rider function
+const handleDeleteRider = (rider) => {
+  Swal.fire({
+    title: "Delete Rider?",
+    text: "This action cannot be undone.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#56bd1f",
+      cancelButtonColor: "#d33",
+    confirmButtonText: "Delete",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      axiosSecure.delete(`/riders/${rider._id}`).then((res) => {
+        if (res.data.deletedCount > 0) {
+          Swal.fire({ title: "Rider Deleted", icon: "success" });
+          refetch();
+        }
+      });
+    }
+  });
+};
   // handle updateRider status functions
   const updateRiderStatus = (rider, status) => {
     Swal.fire({
@@ -207,7 +227,7 @@ const ApproveRiders = () => {
                     >
                       <ImCross />
                     </Button>
-                    <Button className="btn bg-red-500 hover:bg-red-600">
+                    <Button onClick={() => handleDeleteRider(rider)} className="btn bg-red-500 hover:bg-red-600">
                       <FaRegTrashAlt />
                     </Button>
                   </TableCell>

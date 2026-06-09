@@ -28,7 +28,7 @@ const PaymentHistory = () => {
   return (
     <div className="overflow-hidden rounded-md border">
       <Table>
-        <TableCaption>A list of your recent invoices.</TableCaption>
+        
         <TableHeader>
           <TableRow>
             <TableHead className="w-[100px]">No.</TableHead>
