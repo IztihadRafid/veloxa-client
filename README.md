@@ -1,16 +1,62 @@
-# React + Vite
+# 🚀 Veloxa
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> ⚡ A scalable real-time parcel delivery system with rider assignment, live tracking, role-based access, and secure payments.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🌐 Live Demo
+👉 https://zapshift-a89f5.web.app
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🧠 Project Highlights
 
-## Expanding the ESLint configuration
+- 🚚 Real-time parcel delivery lifecycle system  
+- 👥 Multi-role platform (User / Rider / Admin)  
+- 🧭 Status-based delivery tracking engine  
+- 📊 Analytics dashboard with ApexCharts  
+- 🔐 Firebase Authentication system  
+- 💳 Stripe payment integration  
+- ⚡ Optimized API communication with TanStack Query  
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🛠️ Tech Stack
+
+### 🎨 Frontend
+
+- ⚛️ ReactJS – Component-based UI  
+- 🎨 HTML5 + TailwindCSS – Responsive design system  
+- 📡 Axios – API communication  
+- 🔄 TanStack Query – Server state management  
+- 📊 ApexCharts – Data visualization  
+- 🎯 React Icons – Icon system  
+- 🔐 Firebase Authentication – Secure login system  
+- ⚡ JavaScript (ES6+) – Core logic  
+
+---
+
+### ⚙️ Backend
+
+- 🟢 Node.js – Runtime environment  
+- 🚀 Express.js – REST API framework  
+- 🍃 MongoDB – NoSQL database  
+- 🔐 bcryptjs – Password hashing  
+- 💳 Stripe – Payment gateway integration  
+
+---
+
+## 🏗️ System Design
+
+### 🔄 Delivery Workflow
+
+```txt
+User → Create Parcel Request
+        ↓
+Admin → Assign Rider
+        ↓
+Rider → Pickup Parcel
+        ↓
+System → Track Status Update
+        ↓
+Delivery Completed
