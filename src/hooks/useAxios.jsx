@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const axiosInstance = axios.create({ baseURL: "http://localhost:8082" });
+const axiosInstance = axios.create({ baseURL: "https://veloxa-server.vercel.app" });
 const useAxios = () => {
     return axiosInstance
 };

@@ -1,4 +1,3 @@
-
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,11 +13,16 @@ import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import { FaRegTrashAlt, FaUserCheck } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
-
+import { useState } from "react";
 import Swal from "sweetalert2";
 
 const ApproveRiders = () => {
   const axiosSecure = useAxiosSecure();
+  const [searchEmail, setSearchEmail] = useState("");
+  const [searchContact, setSearchContact] = useState("");
+  const [searchStatus, setSearchStatus] = useState("");
+  const [searchWorkStatus, setSearchWorkStatus] = useState("");
+  const [searchDate, setSearchDate] = useState("");
   const {
     refetch,
     data: riders = [],
@@ -39,27 +43,50 @@ const ApproveRiders = () => {
       ? `${stringText.slice(0, maxLength)}...`
       : stringText;
   };
-// handle delete rider function
-const handleDeleteRider = (rider) => {
-  Swal.fire({
-    title: "Delete Rider?",
-    text: "This action cannot be undone.",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#56bd1f",
-      cancelButtonColor: "#d33",
-    confirmButtonText: "Delete",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      axiosSecure.delete(`/riders/${rider._id}`).then((res) => {
-        if (res.data.deletedCount > 0) {
-          Swal.fire({ title: "Rider Deleted", icon: "success" });
-          refetch();
-        }
-      });
-    }
+  const filteredRiders = riders.filter((rider) => {
+    const matchEmail = rider?.email
+      ?.toLowerCase()
+      .includes(searchEmail.toLowerCase());
+
+    const matchContact = rider?.contact
+      ?.toLowerCase()
+      .includes(searchContact.toLowerCase());
+
+    const matchStatus = searchStatus ? rider?.status === searchStatus : true;
+
+    const matchWorkStatus = searchWorkStatus
+      ? rider?.workStatus === searchWorkStatus
+      : true;
+
+    const matchDate = searchDate
+      ? new Date(rider?.createdAt).toISOString().split("T")[0] === searchDate
+      : true;
+
+    return (
+      matchEmail && matchContact && matchStatus && matchWorkStatus && matchDate
+    );
   });
-};
+  // handle delete rider function
+  const handleDeleteRider = (rider) => {
+    Swal.fire({
+      title: "Delete Rider?",
+      text: "This action cannot be undone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#56bd1f",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Delete",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.delete(`/riders/${rider._id}`).then((res) => {
+          if (res.data.deletedCount > 0) {
+            Swal.fire({ title: "Rider Deleted", icon: "success" });
+            refetch();
+          }
+        });
+      }
+    });
+  };
   // handle updateRider status functions
   const updateRiderStatus = (rider, status) => {
     Swal.fire({
@@ -97,12 +124,63 @@ const handleDeleteRider = (rider) => {
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-2xl font-semibold">Approve Riders</h1>
-        <p className="text-sm text-muted-foreground">
-          Rider Applications: {riders.length}
+        <h1 className="lg:text-5xl md:text-3xl text-2xl font-bold text-lime-700 md:p-8 p-4 bg-green-100 rounded-4xl">
+          Approve Riders
+        </h1>
+        <p className="lg:text-4xl md:text-3xl text-2xl font-bold text-lime-700 md:p-8 ">
+          Total Users: {riders.length}
         </p>
       </div>
+      <div className="grid lg:grid-cols-5 md:grid-cols-3 gap-3 p-4 bg-gray-50 rounded-xl m-3">
+        {/* Search by Email */}
+        <input
+          type="text"
+          placeholder="Search email..."
+          value={searchEmail}
+          onChange={(e) => setSearchEmail(e.target.value)}
+          className="input input-bordered w-full p-2 bg-green-100 rounded-[15px] border border-lime-700"
+        />
 
+        {/* Search by Contact */}
+        <input
+          type="text"
+          placeholder="Search contact..."
+          value={searchContact}
+          onChange={(e) => setSearchContact(e.target.value)}
+          className="input input-bordered w-full p-2 bg-green-100 rounded-[15px] border border-lime-700"
+        />
+
+        {/* Application Status */}
+        <select
+          value={searchStatus}
+          onChange={(e) => setSearchStatus(e.target.value)}
+          className="select select-bordered w-full p-2 bg-green-100 rounded-[15px] border border-lime-700"
+        >
+          <option value="">All Status</option>
+          <option value="pending">Pending</option>
+          <option value="approved">Approved</option>
+          <option value="rejected">Rejected</option>
+        </select>
+
+        {/* Work Status */}
+        <select
+          value={searchWorkStatus}
+          onChange={(e) => setSearchWorkStatus(e.target.value)}
+          className="select select-bordered  w-full p-2 bg-green-100 rounded-[15px] border border-lime-700"
+        >
+          <option value="">All Work Status</option>
+          <option value="in_delivery">In Delivery</option>
+          <option value="available">Available</option>
+        </select>
+
+        {/* Search by Date */}
+        <input
+          type="date"
+          value={searchDate}
+          onChange={(e) => setSearchDate(e.target.value)}
+          className="input input-bordered w-full p-2 bg-green-100 rounded-[15px] border border-lime-700"
+        />
+      </div>
       <div className="overflow-hidden rounded-[15px] m-3 border  bg-white ">
         <Table className="w-full table-fixed text-md">
           <TableHeader className="bg-green-100">
@@ -150,7 +228,7 @@ const handleDeleteRider = (rider) => {
                 </TableCell>
               </TableRow>
             ) : riders.length > 0 ? (
-              riders.map((rider, index) => (
+              filteredRiders.map((rider, index) => (
                 <TableRow key={rider._id}>
                   <TableCell className="font-medium">{index + 1}</TableCell>
                   <TableCell className="max-w-[30ch] whitespace-normal break-words">
@@ -227,7 +305,10 @@ const handleDeleteRider = (rider) => {
                     >
                       <ImCross />
                     </Button>
-                    <Button onClick={() => handleDeleteRider(rider)} className="btn bg-red-500 hover:bg-red-600">
+                    <Button
+                      onClick={() => handleDeleteRider(rider)}
+                      className="btn bg-red-500 hover:bg-red-600"
+                    >
                       <FaRegTrashAlt />
                     </Button>
                   </TableCell>
@@ -243,7 +324,6 @@ const handleDeleteRider = (rider) => {
           </TableBody>
         </Table>
       </div>
-      
     </div>
   );
 };

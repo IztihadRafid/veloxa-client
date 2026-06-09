@@ -18,6 +18,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 const UsersManagement = () => {
   const { users, isLoading, refetch, setSearchText, searchText } = useAllUser();
@@ -74,6 +75,26 @@ const UsersManagement = () => {
     });
   };
 
+  // handle Delete User
+  const handleDeleteUser=(user)=>{
+    Swal.fire({
+      title: "Delete User?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#56bd1f",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Delete",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.delete(`/users/${user._id}`).then((res) => {
+          if (res.data.deletedCount > 0) {
+            Swal.fire({ title: "User Deleted", icon: "success" });
+            refetch();
+          }
+        });
+      }
+    });
+  }
   return (
     <div>
       <div>
@@ -102,7 +123,7 @@ const UsersManagement = () => {
               <TableHead className="text-green-950">Role</TableHead>
               <TableHead className="text-green-950">Created At</TableHead>
               <TableHead className="text-green-950">Admin Action</TableHead>
-              <TableHead className="text-green-950">Other Actions</TableHead>
+              <TableHead className="text-green-950">User Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -164,7 +185,7 @@ const UsersManagement = () => {
                         <TooltipTrigger>
                           <Button
                             onClick={() => handleMakeAdmin(user)}
-                            className={"btn-primary bg-red-600 text-white"}
+                            className={"btn-primary bg-orange-500 text-white"}
                           >
                             <FaUserShield></FaUserShield>
                             <TooltipContent side="right">
@@ -174,6 +195,21 @@ const UsersManagement = () => {
                         </TooltipTrigger>
                       </Tooltip>
                     )}
+                  </TableCell>
+                  <TableCell>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <Button
+                          onClick={() => handleDeleteUser(user)}
+                          className={"btn-primary bg-red-600 text-white"}
+                        >
+                          <FaRegTrashAlt></FaRegTrashAlt>
+                          <TooltipContent side="right">
+                            Remove User
+                          </TooltipContent>
+                        </Button>
+                      </TooltipTrigger>
+                    </Tooltip>
                   </TableCell>
                 </TableRow>
               ))

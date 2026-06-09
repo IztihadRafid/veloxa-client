@@ -9,7 +9,7 @@ const DashboardLayout = () => {
         <AppSidebar  className={"w-1/6"}>
           
         </AppSidebar>
-        <main  className={"w-5/6 bg-white"} >
+        <main  className={"w-6/6 bg-white"} >
           <SidebarTrigger />
           <Outlet></Outlet>
         </main>
