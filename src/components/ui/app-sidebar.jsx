@@ -10,7 +10,6 @@ import {
   FaUser,
 } from "react-icons/fa";
 import { MdAssignment, MdDashboard, MdDirectionsBike } from "react-icons/md";
-import { SlSettings } from "react-icons/sl";
 import { NavLink } from "react-router";
 
 export function AppSidebar() {
@@ -38,11 +37,7 @@ export function AppSidebar() {
       label: "Payment History",
       href: "/dashboard/payment-history",
     },
-    {
-      icon: SlSettings,
-      label: "Settings",
-      href: "/dashboard/settings",
-    },
+   
   ];
 
   const adminLinks = [

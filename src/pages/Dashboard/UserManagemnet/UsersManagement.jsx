@@ -154,7 +154,7 @@ const UsersManagement = () => {
                             <FiShieldOff></FiShieldOff>
 
                             <TooltipContent side="right">
-                              <p>{user.role}</p>
+                              {user.role}
                             </TooltipContent>
                           </Button>
                         </TooltipTrigger>
@@ -168,7 +168,7 @@ const UsersManagement = () => {
                           >
                             <FaUserShield></FaUserShield>
                             <TooltipContent side="right">
-                              <p>{user.role}</p>
+                              {user.role}
                             </TooltipContent>
                           </Button>
                         </TooltipTrigger>

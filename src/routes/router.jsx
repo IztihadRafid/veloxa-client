@@ -11,7 +11,6 @@ import AboutUs from "@/pages/AboutUs/AboutUs";
 import SendParcel from "@/pages/SendParcel/SendParcel";
 import DashboardLayout from "@/layouts/DashboardLayout";
 import MyParcels from "@/pages/Dashboard/MyParcels/MyParcels";
-import Settings from "@/pages/Dashboard/Setttings/Settings";
 import Payment from "@/pages/Dashboard/Payment/Payment";
 import PaymentSuccess from "@/pages/Dashboard/Payment/PaymentSuccess";
 import PaymentCancelled from "@/pages/Dashboard/Payment/PaymentCancelled";
@@ -24,6 +23,7 @@ import RiderRoute from "./RiderRoute";
 import AssignedDeliveries from "@/pages/Dashboard/AssignedDeliveries/AssignedDeliveries";
 import CompletedDeiliveries from "@/pages/Dashboard/CompletedDeliveries/CompletedDeiliveries";
 import ParcelTrack from "@/pages/Dashboard/ParcelTrack/ParcelTrack";
+import DashboardHome from "@/pages/Dashboard/DashboardHome/DashboardHome";
 
 export const router = createBrowserRouter([
   {
@@ -89,6 +89,11 @@ export const router = createBrowserRouter([
     ),
     children: [
       {
+        index:true,
+        Component:DashboardHome
+        
+      },
+      {
         path: "my-parcels",
         Component: MyParcels,
       },
@@ -150,10 +155,7 @@ export const router = createBrowserRouter([
           </RiderRoute>
         ),
       },
-      {
-        path: "settings",
-        Component: Settings,
-      },
+      
     ],
   },
 ]);
